@@ -5,9 +5,19 @@ import { errorHandler } from "./middleware/errorHandler.middleware.js";
 
 export const app = express();
 
+const allowedOrigins = [process.env.FRONT_END_URI];
+
 app.use(
   cors({
-    origin: process.env.FRONT_END_URI,
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     allowedHeaders: ["Content-Type", "Authorization"],
