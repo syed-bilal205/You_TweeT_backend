@@ -125,7 +125,7 @@ export const login = asyncHandler(async (req, res) => {
 
   const cookieOptions = {
     sameSite: "strict",
-    httpOnly: true,
+
     path: "/",
   };
 
@@ -159,7 +159,7 @@ export const logout = asyncHandler(async (req, res) => {
 
   const cookieOptions = {
     sameSite: "strict",
-    httpOnly: true,
+
     path: "/",
   };
 
@@ -198,7 +198,7 @@ export const refreshAccessToken = asyncHandler(async (req, res) => {
     const cookieOptions = {
       sameSite: "strict",
       path: "/",
-      httpOnly: true,
+
       secure: process.env.NODE_ENV === "production",
     };
     res

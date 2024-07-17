@@ -8,7 +8,7 @@ export const app = express();
 app.use(
   cors({
     origin:
-      "https://you-tweet-frontend-6542-x1e42v9th-syedbilal205s-projects.vercel.app",
+      "https://you-tweet-frontend-l32h-m0j8ndqbc-syedbilal205s-projects.vercel.app",
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
   })
