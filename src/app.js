@@ -7,7 +7,7 @@ export const app = express();
 
 app.use(
   cors({
-    origin: process.env.FRONT_END_URI || "*",
+    origin: process.env.FRONT_END_URI,
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     allowedHeaders: ["Content-Type", "Authorization"],
