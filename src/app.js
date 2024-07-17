@@ -5,7 +5,7 @@ import { errorHandler } from "./middleware/errorHandler.middleware.js";
 
 export const app = express();
 
-const allowedOrigins = process.env.ALLOWED_ORIGINS.split(",");
+const allowedOrigins = process.env.ALLOWED_ORIGINS;
 
 app.use(
   cors({
