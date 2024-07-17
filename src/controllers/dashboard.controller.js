@@ -19,9 +19,8 @@ export const getChannelStats = asyncHandler(async (req, res) => {
   }
 
   // Get the subscriber count
-  const subscriptions = await Subscriptions.find({
-    subscriber: userId,
-  }).select("channel");
+  const subscriptions = await Subscriptions.find().select("channel");
+  console.log(subscriptions);
   const subscriberCount = subscriptions.length;
 
   // Get the channel IDs
@@ -74,13 +73,12 @@ export const getChannelStats = asyncHandler(async (req, res) => {
   // Return the stats
   return res.status(200).json(new ApiResponse(200, stats));
 });
-
 /**
  * Get the videos of the user's subscriptions
  */
 export const getChannelVideos = asyncHandler(async (req, res) => {
   const { _id: userId } = req.user;
-  console.log(userId);
+  // console.log(userId);
 
   // Check if the user is authenticated
   if (!userId) {
@@ -88,21 +86,23 @@ export const getChannelVideos = asyncHandler(async (req, res) => {
   }
 
   // Get the channels the user is subscribed to
-  const subscriptions = await Subscriptions.find({
-    subscriber: userId,
-  }).select("channel");
-
-  // Extract channel IDs from subscriptions
-  const channelIds = subscriptions.map((sub) => sub.channel);
-
-  // Get the videos from the subscribed channels
   const videos = await Videos.find({
-    owner: { $in: channelIds },
-    isPublished: true,
-  }).populate("owner");
+    owner: userId,
+  })
+    .select("-refreshToken")
+    .populate("owner");
 
-  // Return the videos
+  if (!videos) {
+    throw new ApiError(500, "Failed to fetch user's videos");
+  }
+
   return res
     .status(200)
-    .json(new ApiResponse(200, "All channel video fetched", videos));
+    .json(
+      new ApiResponse(
+        200,
+        "User's videos fetched successfully",
+        videos
+      )
+    );
 });

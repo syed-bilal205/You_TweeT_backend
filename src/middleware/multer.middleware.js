@@ -1,12 +1,8 @@
-import fs from "fs";
 import multer from "multer";
 import path from "path";
 
-const tempDir = path.join(__dirname, "public/temp");
-
-if (!fs.existsSync(tempDir)) {
-  fs.mkdirSync(tempDir, { recursive: true });
-}
+// Resolve the temporary directory path
+const tempDir = path.resolve("./public/temp");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {

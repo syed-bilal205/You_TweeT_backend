@@ -50,8 +50,6 @@ export const register = asyncHandler(async (req, res) => {
 
   const avatarLocalPath = req.files?.avatar[0]?.path;
 
-  // console.log("Avatar Local Path Register:", avatarLocalPath);
-
   let coverImageLocalPath;
   if (
     req.files &&

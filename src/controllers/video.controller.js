@@ -124,30 +124,35 @@ export const getSingleVideo = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Invalid video id");
   }
 
-  const video = await Video.findByIdAndUpdate(
-    videoId,
-    {
-      $inc: { views: 1 },
-    },
-    { new: true }
-  ).populate("owner", ["username", "avatar"]);
+  try {
+    const video = await Video.findByIdAndUpdate(
+      videoId,
+      { $inc: { views: 1 } },
+      { new: true }
+    ).populate("owner", ["username", "avatar"]);
 
-  if (!video) {
-    throw new ApiError(404, "Video not found");
-  }
-
-  const userId = req.user?._id;
-  if (userId) {
-    const user = await User.findById(userId);
-    if (!user.watchHistory.includes(videoId)) {
-      user.watchHistory.push(videoId);
-      await user.save();
+    if (!video) {
+      throw new ApiError(404, "Video not found");
     }
-  }
 
-  return res
-    .status(200)
-    .json(new ApiResponse(200, "Video fetched successfully", video));
+    // Update user's watch history
+    const userId = req.user?._id;
+    if (userId) {
+      const user = await User.findById(userId);
+      if (user && !user.watchHistory.includes(videoId)) {
+        user.watchHistory.push(videoId);
+        await user.save();
+      }
+    }
+
+    return res
+      .status(200)
+      .json(
+        new ApiResponse(200, "Video fetched successfully", video)
+      );
+  } catch (error) {
+    throw new ApiError(500, "Failed to fetch video");
+  }
 });
 
 /**
