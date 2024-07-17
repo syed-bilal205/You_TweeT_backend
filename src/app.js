@@ -5,20 +5,9 @@ import { errorHandler } from "./middleware/errorHandler.middleware.js";
 
 export const app = express();
 
-const allowedOrigins = [
-  process.env.ALLOWED_ORIGINS,
-  "http://localhost:5173",
-];
-
 app.use(
   cors({
-    origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
+    origin: "https://youtweetfrontend-production.up.railway.app",
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     allowedHeaders: ["Content-Type", "Authorization"],
