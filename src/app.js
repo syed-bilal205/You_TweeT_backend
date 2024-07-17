@@ -7,11 +7,10 @@ export const app = express();
 
 app.use(
   cors({
-    origin: "https://youtweetfrontend-production.up.railway.app",
+    origin:
+      "https://you-tweet-frontend-6542-x1e42v9th-syedbilal205s-projects.vercel.app",
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    optionsSuccessStatus: 204,
   })
 );
 app.use(express.json({ limit: "16kb" }));
