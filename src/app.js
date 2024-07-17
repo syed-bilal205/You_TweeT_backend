@@ -5,11 +5,15 @@ import { errorHandler } from "./middleware/errorHandler.middleware.js";
 
 export const app = express();
 
-const allowedOrigins = [process.env.FRONT_END_URI];
+const allowedOrigins = [
+  process.env.FRONT_END_URI,
+  "http://localhost:5713",
+];
 
 app.use(
   cors({
     origin: function (origin, callback) {
+      console.log(`Origin: ${origin}`);
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
